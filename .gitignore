@@ -1,0 +1,17 @@
+build/
+external/
+logs/
+*.uf2
+*.elf
+*.bin
+*.hex
+*.dis
+*.map
+__pycache__/
+*.pyc
+.env
+*.PDF
+*.pdf
+*.rtf
+*.log
+*.err
