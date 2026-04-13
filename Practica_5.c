@@ -324,7 +324,8 @@ static bool mpu9250_initialize(void) {
         return false;
     }
 
-    if (!((who_am_i == 0x71) || (who_am_i == 0x73))) {
+    /* 0x71/0x73 = MPU-9250 variants, 0x68 = MPU-6050 (Wokwi simulation) */
+    if (!((who_am_i == 0x71) || (who_am_i == 0x73) || (who_am_i == 0x68))) {
         return false;
     }
 

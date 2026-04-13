@@ -1,17 +1,44 @@
-build/
+# --- Entornos de Python ---
+.venv/
+.venv312/
+venv/
+env/
+__pycache__/
+*.pyc
+.env
+
+# --- Archivos grandes / binarios no necesarios ---
 external/
 logs/
-*.uf2
 *.elf
 *.bin
 *.hex
 *.dis
 *.map
-__pycache__/
-*.pyc
-.env
 *.PDF
 *.pdf
 *.rtf
 *.log
 *.err
+*.exe
+*.dll
+
+# --- Simulink autosaves ---
+*.slx.autosave
+*.slx.err
+*.asv
+
+# --- Datos de calibración y capturas (regenerables) ---
+imu_calibration.dat
+uart_capture.log
+
+# --- Simulación CoppeliaSim ---
+simulacion/
+
+# --- Reglas para la carpeta build ---
+# Ignorar todo EXCEPTO los .uf2 precompilados
+build/*
+!build/*.uf2
+
+# --- NOTA ---
+# Los archivos .c, .h, .m, .py, .ps1, .slx se rastrean automáticamente.

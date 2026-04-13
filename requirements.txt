@@ -1,1 +1,3 @@
 pydwf>=1.1.19
+pyusb>=1.3.0
+libusb-package>=1.0.26

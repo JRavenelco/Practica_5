@@ -11,6 +11,12 @@ classdef PicoPendulumReader < matlab.System
         tcp
     end
 
+    methods
+        function obj = PicoPendulumReader(varargin)
+            setProperties(obj, nargin, varargin{:});
+        end
+    end
+
     methods (Access = protected)
         function setupImpl(obj)
             obj.tcp = tcpclient(char(obj.Host), obj.Port, "Timeout", obj.Timeout);

@@ -48,8 +48,8 @@ pico_set_program_name(Practica_5 "Practica_5")
 pico_set_program_version(Practica_5 "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(Practica_5 1)
-pico_enable_stdio_usb(Practica_5 0)
+pico_enable_stdio_uart(Practica_5 0)
+pico_enable_stdio_usb(Practica_5 1)
 
 # Add the standard library to the build
 target_link_libraries(Practica_5
@@ -88,4 +88,17 @@ target_link_libraries(uart_test
         FreeRTOS-Kernel-Heap4
 )
 pico_add_extra_outputs(uart_test)
+
+# ---- Minimal MPU test: bare-metal I2C + USB serial (no WiFi, no FreeRTOS) ----
+add_executable(mpu_test mpu_test.c)
+pico_set_program_name(mpu_test "mpu_test")
+pico_set_program_version(mpu_test "0.1")
+pico_enable_stdio_uart(mpu_test 0)
+pico_enable_stdio_usb(mpu_test 1)
+target_include_directories(mpu_test PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(mpu_test
+        pico_stdlib
+        hardware_i2c
+)
+pico_add_extra_outputs(mpu_test)
 
