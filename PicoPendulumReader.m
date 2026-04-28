@@ -40,6 +40,14 @@ classdef PicoPendulumReader < matlab.System
         function [t, ax, ay, az, gx, gy, gz, mx, my, mz] = stepImpl(obj)
             line = obj.readSampleLine();
 
+            if isempty(line) || strlength(line) == 0
+                warning("PicoPendulumReader:Timeout", "Timeout TCP — devolviendo ceros.");
+                t = 0; ax = 0; ay = 0; az = 0;
+                gx = 0; gy = 0; gz = 0;
+                mx = 0; my = 0; mz = 0;
+                return;
+            end
+
             values = sscanf(line, "%f,%f,%f,%f,%f,%f,%f,%f,%f,%f");
             if numel(values) ~= 10
                 error("PicoPendulumReader:Parse", "Trama inválida recibida: %s", line);
@@ -163,7 +171,12 @@ classdef PicoPendulumReader < matlab.System
         function ack = sendCommand(obj, command)
             writeline(obj.tcp, command);
             while true
-                line = strtrim(readline(obj.tcp));
+                raw = readline(obj.tcp);
+                if isempty(raw) || ~(ischar(raw) || isstring(raw))
+                    ack = "";
+                    return;
+                end
+                line = strtrim(string(raw));
                 if strlength(line) == 0
                     continue;
                 end
@@ -176,7 +189,12 @@ classdef PicoPendulumReader < matlab.System
 
         function line = readSampleLine(obj)
             while true
-                line = strtrim(readline(obj.tcp));
+                raw = readline(obj.tcp);
+                if isempty(raw) || ~(ischar(raw) || isstring(raw))
+                    line = "";
+                    return;
+                end
+                line = strtrim(string(raw));
                 if strlength(line) == 0
                     continue;
                 end
