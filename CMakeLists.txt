@@ -24,8 +24,8 @@ if (EXISTS ${picoVscode})
 endif()
 # ====================================================================================
 set(PICO_BOARD pico_w CACHE STRING "Board type")
-set(WIFI_SSID "Robot" CACHE STRING "Wi-Fi SSID")
-set(WIFI_PASSWORD "Rave2310" CACHE STRING "Wi-Fi password")
+set(WIFI_SSID "Redmi Note 13 Pro 5G" CACHE STRING "Wi-Fi SSID")
+set(WIFI_PASSWORD "robotsmek" CACHE STRING "Wi-Fi password")
 set(WIFI_TCP_PORT 4242 CACHE STRING "TCP port for MATLAB acquisition")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)

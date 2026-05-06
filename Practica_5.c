@@ -324,10 +324,15 @@ static bool mpu9250_initialize(void) {
         return false;
     }
 
-    /* 0x71/0x73 = MPU-9250 variants, 0x68 = MPU-6050 (Wokwi simulation) */
-    if (!((who_am_i == 0x71) || (who_am_i == 0x73) || (who_am_i == 0x68))) {
+    /* 0x71/0x73 = MPU-9250, 0x70 = MPU-6500, 0x68 = MPU-6050 (Wokwi simulation) */
+    if (!((who_am_i == 0x71) || (who_am_i == 0x73) ||
+          (who_am_i == 0x70) || (who_am_i == 0x68))) {
+        printf("WHO_AM_I unexpected: 0x%02X\n", who_am_i);
         return false;
     }
+    printf("WHO_AM_I = 0x%02X (%s)\n", who_am_i,
+           (who_am_i == 0x71 || who_am_i == 0x73) ? "MPU-9250" :
+           (who_am_i == 0x70)                      ? "MPU-6500 (no mag)" : "MPU-6050");
 
     /* I2C bypass enabled (INT_PIN_CFG 0x02) allows direct AK8963 access */
     if (!ak8963_initialize()) {

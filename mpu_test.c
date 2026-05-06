@@ -159,6 +159,8 @@ int main(void) {
     printf("[MPU] WHO_AM_I = 0x%02X", who);
     if (who == 0x71 || who == 0x73)
         printf(" (MPU-9250)\n");
+    else if (who == 0x70)
+        printf(" (MPU-6500, no magnetometer)\n");
     else if (who == 0x68)
         printf(" (MPU-6050)\n");
     else
