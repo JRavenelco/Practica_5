@@ -319,7 +319,70 @@ Conectar un bloque **Sine Wave** a la entrada del `LACActuatorBlock`:
 
 Esto moverá el actuador entre 30% y 70% de su carrera a 1 Hz.
 
-### 8.3 Modelo completo
+### 8.3 MobileMATLABReader (lectura desde celular)
+
+El repositorio incluye una alternativa para usar MATLAB Mobile como IMU de
+referencia o respaldo cuando no se tenga la Pico W conectada.
+
+Archivos principales:
+
+- `MobileMATLABReader.m`: bloque `MATLAB System` robusto para Simulink.
+- `mobiledev_preflight_check.m`: prueba de conexion fuera de Simulink.
+- `acelerometro_mobile.slx`: modelo ejemplo para acelerometro/giroscopio.
+
+Antes de correr Simulink, probar el telefono:
+
+```matlab
+cd('C:\Users\<tu_usuario>\Desktop\Practica_5')
+run('mobiledev_preflight_check.m')
+```
+
+El script genera:
+
+```text
+mobiledev_preflight_check.log
+```
+
+En Simulink:
+
+1. Agregar un bloque **MATLAB System**.
+2. Escribir `MobileMATLABReader` como clase.
+3. Configurar:
+   - `Rate`: `20`
+   - `UseOrientation`: `false` para la primera prueba
+   - `NoDataTimeout`: `5` o `10`
+   - `CleanupBaseWorkspace`: `true`
+   - `ForceReconnectOnStale`: `true`
+4. Usar solver discreto:
+   - Fixed-step
+   - `discrete (no continuous states)`
+   - Fixed-step size: `0.05`
+   - Stop time: `30`
+
+Salidas:
+
+```text
+t, ax, ay, az, gx, gy, gz, yaw, pitch, roll
+```
+
+El bloque escribe diagnostico en:
+
+```text
+mobilematlab_reader_debug.log
+```
+
+Eventos utiles:
+
+| Evento | Significado |
+|---|---|
+| `CLEANUP_BASE` | Se libero un `mobiledev` viejo del workspace. |
+| `CONNECT` | Conexion creada y sensores habilitados. |
+| `SAMPLE` | Lectura valida; `changed=1` si algun sensor cambio. |
+| `PURGE` | Limpieza periodica de logs internos. |
+| `STALE_CACHE` | Stream congelado; el bloque fuerza reconexion. |
+| `RELEASE` | Simulink hizo Stop y se libero `mobiledev`. |
+
+### 8.4 Modelo completo
 
 ```
 [Sine Wave] → [LACActuatorBlock] → [Scope (feedback)]
